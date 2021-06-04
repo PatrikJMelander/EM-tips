@@ -1,0 +1,10 @@
+version: '3'
+services:
+  postgres-db:
+    image: postgres:alpine
+    container_name: em2021_database_local
+    ports:
+      - 5435:5432
+    environment:
+      POSTGRES_USER: localPostgres
+      POSTGRES_PASSWORD: localPassword

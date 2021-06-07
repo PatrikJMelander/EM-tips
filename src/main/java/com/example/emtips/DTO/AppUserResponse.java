@@ -28,5 +28,7 @@ public class AppUserResponse {
 
     private TipsRow tipsRow;
 
+    private double points;
+
 }
 

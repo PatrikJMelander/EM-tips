@@ -1,6 +1,7 @@
 package com.example.emtips.Service;
 
 import com.example.emtips.DTO.TeamResponse;
+import com.example.emtips.Models.AppUser;
 import com.example.emtips.Models.Team;
 import com.example.emtips.Repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,17 +24,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class TeamService {
-    TeamRepository teamRepository;
+    private final TeamRepository teamRepository;
 
     public TeamResponse addTeam(String teamName) {
-        teamRepository.findByName(teamName).ifPresent(team ->{
-                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Team already exist");
-        });
+        Optional<Team> existingTeam = teamRepository.findByName(teamName);
 
-        Team team = new Team();
-        team.setName(teamName);
-        teamRepository.save(team);
-        return team.toResponse();
+        if (existingTeam.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Team already in system");
+        } else{
+            Team team = new Team();
+            team.setName(teamName);
+            teamRepository.save(team);
+            return team.toResponse();
+            }
+
     }
 
     public TeamResponse getTeam(String teamName) {

@@ -79,5 +79,12 @@ public class AppUserController {
     public ResponseEntity<TipsRowResponse> getUserTipsRow(@RequestBody AppUser appUser) {
         return ResponseEntity.ok(appUserService.getUserTipsRow(appUser));
     }
+
+    @PostMapping ("/add/ponts")
+    public ResponseEntity<AppUserResponse> addPoints(@RequestParam String email,
+                                                     @RequestParam double points){
+        return  ResponseEntity.ok(appUserService.addPoints(email, points));
+    }
+
 }
 

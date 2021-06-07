@@ -24,8 +24,8 @@ import java.util.List;
 @Slf4j
 public class TipsRowService {
 
-    TipsRowRepository tipsRowRepository;
-    MatchRepository matchRepository;
+    private final TipsRowRepository tipsRowRepository;
+    private final MatchRepository matchRepository;
 
     public void fillTipsRowWithMatches(TipsRow tipsrow) {
         List<Match> matches = matchRepository.findAll();

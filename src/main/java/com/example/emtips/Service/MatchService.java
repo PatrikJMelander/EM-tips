@@ -22,17 +22,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class MatchService {
 
-    TeamRepository teamRepository;
-    MatchRepository matchRepository;
+    private final TeamRepository teamRepository;
+    private final MatchRepository matchRepository;
 
 
     public MatchResponse addMatch(String teamName1, String teamName2) {
         Match match = new Match();
-        teamRepository.findByName(teamName1);
-
 
         match.setTeam1(teamRepository.findByName(teamName1).get());
-        match.setTeam1(teamRepository.findByName(teamName2).get());
+        match.setTeam2(teamRepository.findByName(teamName2).get());
         match.setResult("X");
 
         matchRepository.save(match);
@@ -51,5 +49,12 @@ public class MatchService {
         matchRepository.save(match);
 
         return match.toResponse();
+    }
+
+    public MatchResponse getMatch(String teamName1, String teamName2) {
+        Team team1 = teamRepository.findByName(teamName1).get();
+        Team team2 = teamRepository.findByName(teamName2).get();
+
+        return matchRepository.findMatchByTeam1AndTeam2(team1, team2).get().toResponse();
     }
 }

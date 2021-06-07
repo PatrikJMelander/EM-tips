@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/match")
 @CrossOrigin
 public class MatchController {
-    MatchService matchService;
+    private final MatchService matchService;
 
     @PostMapping("/add")
     public ResponseEntity<MatchResponse> addMatch(@RequestParam String teamName1,
@@ -33,6 +33,11 @@ public class MatchController {
                                                       @RequestParam String teamName2,
                                                       @RequestParam String sign) {
         return ResponseEntity.ok(matchService.addMatchResult(teamName1, teamName2, sign));
+    }
+    @GetMapping("/get/match")
+    public ResponseEntity<MatchResponse> getMatch(@RequestParam String teamName1,
+                                                  @RequestParam String teamName2){
+        return ResponseEntity.ok(matchService.getMatch(teamName1, teamName2));
     }
 
 }

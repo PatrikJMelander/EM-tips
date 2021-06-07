@@ -20,6 +20,7 @@ public class AppUser {
     private String lastName;
     private String password;
     private String email;
+    private double points;
     @ManyToOne
     private TipsRow tipsRow;
 
@@ -28,6 +29,11 @@ public class AppUser {
                 .setFirstName(this.firstName)
                 .setLastName(this.lastName)
                 .setEmail(this.email)
-                .setTipsRow(this.tipsRow);
+                .setTipsRow(this.tipsRow)
+                .setPoints(this.points);
+    }
+
+    public void addPoints(double points) {
+        this.points += points;
     }
 }

@@ -28,9 +28,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class AppUserService {
-    
-    AppUserRepository appUserRepository;
-    TipsRowService tipsRowService;
+
+    private final AppUserRepository appUserRepository;
+    private final TipsRowService tipsRowService;
     
     public AppUserResponse validateLogin(String email, String password) {
         AppUser appUser = appUserRepository.findByEmail(email)
@@ -61,10 +61,10 @@ public class AppUserService {
         if (existingAppUser.isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use");
         } else {
-            validateAppUser(appUser);
+            validateAppUser(existingAppUser.get());
             TipsRow tipsRow = new TipsRow();
             tipsRowService.fillTipsRowWithMatches(tipsRow);
-            appUser.setTipsRow(tipsRow);
+            existingAppUser.get().setTipsRow(tipsRow);
 
             return appUserRepository.save(appUser)
                     .toResponse();
@@ -152,5 +152,13 @@ public class AppUserService {
     public TipsRowResponse getUserTipsRow(AppUser appUser) {
         AppUser user = appUserRepository.findAppUserByEmail(appUser.getEmail());
         return user.getTipsRow().toResponse();
+    }
+
+    public AppUserResponse addPoints(String email, double points) {
+        AppUser user = appUserRepository.findAppUserByEmail(email);
+
+        user.addPoints(points);
+        appUserRepository.save(user);
+        return user.toResponse();
     }
 }
